@@ -39,9 +39,32 @@ yyjson_dep = yyjson_subproject.dependency('yyjson')
 
 # libwebsockets install
 # -----------------------------------------------------------------
-#libwebsockets = subproject('libwebsockets')
-#libwebsockets_dep = libwebsockets.get_variable('libwebsockets_dep')
-libwebsockets_dep = dependency('libwebsockets')
+
+libwebsockets_options = cmake.subproject_options()
+libwebsockets_options.add_cmake_defines({
+  'CMAKE_BUILD_TYPE': 'Release',
+  'CMAKE_C_COMPILER': 'gcc',
+  'LWS_WITH_SSL': 'ON',
+  'LWS_WITHOUT_TESTAPPS': 'ON',
+  'LWS_WITHOUT_TEST_SERVER': 'ON',
+  'LWS_WITHOUT_TEST_CLIENT': 'ON',
+  'LWS_WITH_NO_LOGS': 'ON',
+  'LWS_OPENSSL_INCLUDE_DIRS': '/usr/include/openssl/',
+  'LWS_OPENSSL_LIBRARIES': '/usr/lib/x86_64-linux-gnu/'
+})
+
+#'LWS_WITH_ZLIB': 'ON',
+#  'CMAKE_C_FLAGS': 
+#libwebsockets_subproject = cmake.subproject('libwebsockets', options: libwebsockets_options, dependencies: [libopenssl_dep])
+libwebsockets_options.append_compile_args('c','-Wno-implicit-function-declaration', '-Wno-unused-parameter', '-Wno-pedantic')
+libwebsockets_subproject = cmake.subproject(
+  'libwebsockets',
+  options: libwebsockets_options
+)
+libwebsockets_dep = libwebsockets_subproject.dependency('websockets', include_type: 'system')
+libwebsockets = subproject('libwebsockets')
+libwebsockets_dep = libwebsockets.get_variable('websockets_dep')
+#libwebsockets_dep = dependency('libwebsockets')
 
 sources = ['../src/main.c']
 
@@ -49,7 +72,6 @@ executable(
   'shootingstr',
   sources,
   link_args : [
-    '-lwebsockets',
     #'-no-as-needed',
     '-lssl',
     '-lcap'

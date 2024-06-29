@@ -101,6 +101,15 @@ cdata.set('LWS_ESP_PLATFORM', false)
 cdata.set('LWS_NO_DAEMONIZE', host_machine.system() == 'windows')
 cdata.set('LWS_WITH_DISKCACHE', host_machine.system() != 'windows')
 
+cdata.set('LWS_WITH_SSL',true)
+cdata.set('LWS_WITHOUT_TESTAPPS',true)
+cdata.set('LWS_WITHOUT_TEST_SERVER',true)
+cdata.set('LWS_WITHOUT_TEST_CLIENT',true)
+cdata.set('LWS_WITH_NO_LOGS',true)
+cdata.set('LWS_OPENSSL_INCLUDE_DIRS','/usr/include/openssl/')
+cdata.set('LWS_OPENSSL_LIBRARIES','/usr/lib/x86_64-linux-gnu/')
+
+
 cc = meson.get_compiler('c')
 cdata.set('LWS_HAS_INTPTR_T', cc.has_type('intptr_t', prefix: '#include <stdint.h>'))
 cdata.set('LWS_HAVE_SUSECONDS_T', cc.has_type('suseconds_t', prefix: '#include <sys/types.h>'))
@@ -237,6 +246,7 @@ privcdata.set('LWS_HAS_PTHREAD_SETNAME_NP', host_machine.system() != 'darwin' an
 
 privcdata.set('LWS_HAVE_TCP_USER_TIMEOUT', cc.has_header_symbol('netinet/tcp.h', 'TCP_USER_TIMEOUT'))
 
+
 privcfile = configure_file(
   input: 'cmake/lws_config_private.h.in',
   output: 'lws_config_private.h',
@@ -245,7 +255,7 @@ privcfile = configure_file(
 )
 
 incdirs = []
-incdirs += include_directories('include', 'lib', 'lib/core', 'lib/event-libs', 'lib/system/metrics')
+incdirs += include_directories('include','lib', 'lib/core', 'lib/event-libs', 'lib/system/metrics')
 
 sources = files(
   'lib/core/alloc.c',
@@ -271,26 +281,7 @@ sources = files(
   #  'lib/secure-streams/plugins/ssp-h1url/h1url.c',
   #  'lib/tls/lws-gencrypto-common.c',
   #  'lib/tls/lws-genec-common.c',
-  #  'lib/tls/mbedtls/lws-genaes.c',
-  #  'lib/tls/mbedtls/lws-gencrypto.c',
-  #  'lib/tls/mbedtls/lws-genec.c',
-  #  'lib/tls/mbedtls/lws-genhash.c',
-  #  'lib/tls/mbedtls/lws-genrsa.c',
-  #  'lib/tls/mbedtls/mbedtls-client.c',
-  #  'lib/tls/mbedtls/mbedtls-extensions.c',
-  #  'lib/tls/mbedtls/mbedtls-server.c',
-  #  'lib/tls/mbedtls/mbedtls-session.c',
-  #  'lib/tls/mbedtls/mbedtls-ssl.c',
-  #  'lib/tls/mbedtls/mbedtls-tls.c',
-  #  'lib/tls/mbedtls/mbedtls-x509.c',
-  #  'lib/tls/mbedtls/wrapper/library/ssl_cert.c',
-  #  'lib/tls/mbedtls/wrapper/library/ssl_lib.c',
-  #  'lib/tls/mbedtls/wrapper/library/ssl_methods.c',
-  #  'lib/tls/mbedtls/wrapper/library/ssl_pkey.c',
-  #  'lib/tls/mbedtls/wrapper/library/ssl_stack.c',
-  #  'lib/tls/mbedtls/wrapper/library/ssl_x509.c',
-  #  'lib/tls/mbedtls/wrapper/platform/ssl_pm.c',
-  #  'lib/tls/mbedtls/wrapper/platform/ssl_port.c',
+
   #  'lib/tls/openssl/lws-genaes.c',
   #  'lib/tls/openssl/lws-gencrypto.c',
   #  'lib/tls/openssl/lws-genec.c',

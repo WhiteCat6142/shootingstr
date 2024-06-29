@@ -1,0 +1,13 @@
+[wrap-git]
+directory=libwebsockets
+url=https://github.com/warmcat/libwebsockets.git
+revision=v4.3.3
+patch_directory = libwebsockets
+method = cmake
+
+[properties]
+cmake_toolchain_file = 'libwebsockets/CMakeLists.txt'
+cmake_defaults       = false
+
+[provide]
+libwebsockets = websockets_dep

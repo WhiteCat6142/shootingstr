@@ -61,7 +61,8 @@ COPY ./Makefile /app/Makefile
 WORKDIR /app
 
 # Build
-RUN make setup && make build
+ENV CMAKE_C_FLAGS "-Wno-implicit-function-declaration -Wno-unused-parameter -Wno-pedantic"
+RUN make setup && make build && echo "test0"
 
 # Start shootingstr
 RUN echo "start!"
